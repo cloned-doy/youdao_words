@@ -17,6 +17,21 @@ def invoke(action, **params):
         raise Exception(response['error'])
     return response['result']
 
-invoke('createDeck', deck='test1')
-result = invoke('deckNames')
-print('got list of decks: {}'.format(result))
+def update_note_fields(note_id, examples):
+    params = {
+            "note": {
+                "id": note_id,
+                "fields": {
+                    "Examples": examples
+                }
+            }
+        }
+    invoke('updateNote', **params)
+    
+examples = "你好"
+
+
+cards = invoke('findCards', query='deck:NEWHSK')
+update_note_fields(note_id=result[0], examples=examples)
+sample_notes = invoke('notesInfo', notes=[result[0]])
+simplified = sample_notes[0]['fields']['Simplified']['value']
